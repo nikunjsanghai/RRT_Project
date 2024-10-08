@@ -3,7 +3,7 @@
 template <typename T>
 void Setup<T>::addObstacle(const std::vector<Point<T>>& obstacle) {
     if (obstacle.size() != 4) {
-        std::cerr << "Error: Obstacle must be defined by 4 corners." << std::endl;
+        logger->error("Error: Obstacle must be defined by 4 corners.");
         return;
     }
 
@@ -26,6 +26,7 @@ void Setup<T>::addObstacle(const std::vector<Point<T>>& obstacle) {
             markCell(point, -1); // Mark the cell as an obstacle (-1)
         }
     }
+    logger->info("Obstacle added with top-left: ({}, {}), bottom-right: ({}, {})", minX, minY, maxX, maxY);
 }
 template <typename T>
 Node<T>* RRTPlanner<T>::findNearest(const Point<T>& randomPoint, Node<T>* currentNode, double& minDistance) {
@@ -52,7 +53,7 @@ Node<T>* RRTPlanner<T>::findNearest(const Point<T>& randomPoint, Node<T>* curren
 template <typename T>
 Point<T> RRTPlanner<T>::samplePoint() {
     Point<T> point = Point<T>(distX(gen), distY(gen));
-    std::cout << "Sampled Point: (" << point.getX() << ", " << point.getY() << ")" << std::endl;
+    logger->debug("Sampled Point: ({}, {})", point.getX(), point.getY());
     return point;
 }
 
@@ -69,7 +70,7 @@ bool RRTPlanner<T>::collision_avoidance_check(Point<T>& randomPoint, const Point
     double dy = randomPoint.getY() - nearestPoint.getY();
     double distance = std::sqrt(dx * dx + dy * dy);
 
-    std::cout << "Checking collision from (" << nearestPoint.getX() << ", " << nearestPoint.getY() << ") to (" << randomPoint.getX() << ", " << randomPoint.getY() << ")" << std::endl;
+    logger->debug("Checking collision from ({}, {}) to ({}, {})", nearestPoint.getX(), nearestPoint.getY(), randomPoint.getX(), randomPoint.getY());
 
     if (distance == 0) {
         return false;
@@ -82,7 +83,7 @@ bool RRTPlanner<T>::collision_avoidance_check(Point<T>& randomPoint, const Point
     randomPoint.modify_x(nearestPoint.getX() + step_ratio * dx);
     randomPoint.modify_y(nearestPoint.getY() + step_ratio * dy);
 
-    std::cout << "Modified random point to: (" << randomPoint.getX() << ", " << randomPoint.getY() << ")" << std::endl;
+    logger->debug("Modified random point to: ({}, {})", randomPoint.getX(), randomPoint.getY());
 
     // Now check the path from nearestPoint to randomPoint in steps of 'dim'
     int steps = static_cast<int>(distance / setup.dim);
@@ -97,7 +98,7 @@ bool RRTPlanner<T>::collision_avoidance_check(Point<T>& randomPoint, const Point
             continue;
         }
         if (!setup.isValid(Point<T>(intermediate_x, intermediate_y))) {
-            std::cout << "Path blocked at: (" << intermediate_x << ", " << intermediate_y << ")" << std::endl;
+            logger->warn("Path blocked at: ({}, {})", intermediate_x, intermediate_y);
             return false; // Obstacle detected
         }
     }
@@ -108,6 +109,9 @@ bool RRTPlanner<T>::collision_avoidance_check(Point<T>& randomPoint, const Point
 
 template <typename T>
 void RRTPlanner<T>::run(int thread_id) {
+    logger->debug("Thread {} started running.", thread_id);
+
+
     while (!targetReached) {
         Point<T> randomPoint = samplePoint();
         double minDistance = std::numeric_limits<double>::max();
@@ -116,45 +120,42 @@ void RRTPlanner<T>::run(int thread_id) {
         std::unique_lock<std::mutex> lock(treeMutex);
         Node<T>* nearestNode = findNearest(randomPoint, root.get(), minDistance);
         lock.unlock();
-        std::cout<<"Nearest Node: "<<std::endl;
-
         if (nearestNode != nullptr) 
         {
-        nearestNode->getPoint().print();
+        logger->debug("Thread {}: Nearest Node found at ({}, {})", thread_id, nearestNode->getPoint().getX(), nearestNode->getPoint().getY());
         } 
         else 
         {
-         std::cout << "nearestNode is nullptr" << std::endl;
+         logger->debug("Thread {}: Nearest Node is nullptr.", thread_id);
         }
         if (nearestNode && abs(nearestNode->getPoint().getX() - randomPoint.getX()) > setup.dim && abs(nearestNode->getPoint().getY() - randomPoint.getY()) > setup.dim) {  
             // Adjust randomPoint to a point within step_size distance and check if the path is clear
             if (collision_avoidance_check(randomPoint, nearestNode->getPoint())) {
-                std::cout << "Thread " << thread_id << ": Path is clear." << std::endl;
+                logger->debug("Thread {}: Path is clear.", thread_id);
                 std::unique_lock<std::mutex> lock(treeMutex);
                 nearestNode->addChild(std::make_unique<Node<T>>(randomPoint, nearestNode));
                 setup.markCell(randomPoint, 1);
-                std::cout << "Thread " << thread_id << ": Added point " << count++ << std::endl;
-                std::cout << "Random Point: (" << randomPoint.getX() << ", " << randomPoint.getY() << ")" << std::endl;
+                logger->info("Thread {}: Added point {} at ({}, {})", thread_id, count++, randomPoint.getX(), randomPoint.getY());
                 lock.unlock();
 
                 // Check if the target has been reached
                 if (calculateDistance(randomPoint, setup.target) < setup.dim*1.5) {
-                    std::cout << "Thread " << thread_id << ": Target reached!" << std::endl;
+                    logger->info("Thread {}: Target reached!", thread_id);
                     std::unique_lock<std::mutex> lock(treeMutex);
                     targetReached = true;
                     cv.notify_all();
-                    std::cout << "Thread " << thread_id << ": Notified all threads" << std::endl;
+                    logger->info("Thread {}: Notified all threads", thread_id);
                     lock.unlock();
                 }
             }
         }
         else if(nearestNode)
         {
-            std::cout << "Thread " << thread_id << ": Random point too close to nearest node." << std::endl;
+            logger->debug("Thread {}: Random point too close to nearest node.", thread_id);
         }
         else
         {
-            std::cout << "Thread " << thread_id << ": Nearest node is nullptr." << std::endl;
+            logger->warn("Thread {}: Nearest node is nullptr.", thread_id);
         }
     }
 }
@@ -221,7 +222,7 @@ std::vector<Point<T>> RRTPlanner<T>::getShortestPath() {
         // Reverse the path to start from the root
         std::reverse(path.begin(), path.end());
     } else {
-        std::cerr << "Target not reachable from the root node!" << std::endl;
+        logger->error("Target node not reachable.");
     }
 
     return path;

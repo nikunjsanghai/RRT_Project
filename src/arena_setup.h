@@ -21,6 +21,9 @@
 #include <spdlog/sinks/basic_file_sink.h> // To log to a file
 #include <iomanip>
 
+extern std::shared_ptr<spdlog::logger> logger;
+std::shared_ptr<spdlog::logger> logger;  // Declare the logger globally
+
 // Templated Point structure for 2D and 3D space
 template <typename T>
 class Point {
@@ -99,11 +102,6 @@ public:
     const std::vector<std::unique_ptr<Node<T>>>& getChildren() const {
         return children;
     }
-    void nearestNodeprint()
-    {
-        std::cout << "Nearest Node: ";
-        point.print();
-    }
 };
 
 // Setup class with arena configuration
@@ -121,15 +119,15 @@ public:
         arena.resize(std::ceil(width / dim), std::vector<int>(std::ceil(length / dim), 0));
         
         // Logger print statements
-        std::cout << "Initializing Setup..." << std::endl;
-        std::cout << "Length: " << length << ", Width: " << width << std::endl;
-        std::cout << "Start Point: (" << start.getX() << ", " << start.getY() << ")" << std::endl;
-        std::cout << "Target Point: (" << target.getX() << ", " << target.getY() << ")" << std::endl;
-        std::cout << "Robot Length: " << l << ", Robot Width: " << w << std::endl;
-        std::cout << "Step Size: " << step_size << std::endl;
-        std::cout << "Arena Dimensions: " << arena.size() << "x" << arena[0].size() << std::endl;
-        std::cout << "unit cell size: " << dim << std::endl;
-        std::cout << "Setup complete." << std::endl;
+        logger->info("Initializing Setup...");
+        logger->debug("Length: {}, Width: {}", length, width);
+        logger->debug("Start Point: ({}, {})", start.getX(), start.getY());
+        logger->debug("Target Point: ({}, {})", target.getX(), target.getY());
+        logger->debug("Robot Length: {}, Robot Width: {}", l, w);
+        logger->debug("Step Size: {}", step_size);
+        logger->debug("Arena Dimensions: {}x{}", arena.size(), arena[0].size());
+        logger->debug("Unit cell size: {}", dim);
+        logger->info("Setup complete.");
     }
 
     bool isValid(const Point<T>& point) const {
@@ -142,10 +140,14 @@ public:
     int x = static_cast<int>(point.getX() / dim);
     int y = static_cast<int>(point.getY() / dim);
     
-    if (x >= 0 && x < arena[0].size() && y >= 0 && y < arena.size()) {
-        arena[y][x] = value;
-    } else {
-        std::cerr << "Warning: Tried to mark cell out of bounds!" << std::endl;
+    if (x >= 0 && x < arena[0].size() && y >= 0 && y < arena.size()) 
+    {
+            arena[y][x] = value;
+            logger->debug("Marked cell at ({}, {}) with value {}", x, y, value);
+    }
+   else 
+    {
+    logger->warn("Tried to mark cell out of bounds at ({}, {})", x, y);
     }
     }
 
@@ -167,7 +169,8 @@ class RRTPlanner {
 
 public: // Add this to declare public members
     RRTPlanner(Setup<T>& setup) 
-        : gen(std::random_device{}()), distX(0, setup.length), distY(0, setup.width), count(1), setup(setup), root(std::make_unique<Node<T>>(setup.start)) {
+        : gen(std::random_device{}()), distX(0, setup.length), distY(0, setup.width), count(1), setup(setup),
+        root(std::make_unique<Node<T>>(setup.start)) {
         setup.markCell(setup.start, 1);
     }
     std::unique_ptr<Node<T>> getRoot() { return std::move(root); }
@@ -304,28 +307,21 @@ void visualize(const Setup<T>& setup, const Node<T>* root, const std::vector<Poi
 }
 
 std::string generateLogFileName() {
-    // Get the current time
     auto now = std::chrono::system_clock::now();
     std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-
-    // Format the time as a string (e.g., "rrt_project_2024-10-06_12-30-45.log")
     std::ostringstream oss;
     oss << "logs/rrt_project_" << std::put_time(std::localtime(&now_time), "%Y-%m-%d_%H-%M-%S") << ".log";
     return oss.str();
 }
-void setupLogger() {
-    // Generate a dynamic log file name
-    std::string logFileName = generateLogFileName();
-    auto logger = spdlog::basic_logger_mt("file_logger", logFileName);
 
-    // Set the logger level
-    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
-    logger->trace("Logging Level is set at trace");
-    logger->debug("Logging Level is set at debug");
-    logger->info("Logging Level is set at info");
-    logger->warn("Logging Level is set at warn");
-    logger->error("Logging Level is set at error");
-    logger->critical("Logging Level is set at critical");
+void setupLogger() {
+    std::string logFileName = generateLogFileName();
+    logger = spdlog::basic_logger_mt("file_logger", logFileName);
+    logger->set_level(spdlog::level::info);
+    spdlog::set_default_logger(logger); // Set as default to easily use spdlog::info, etc.
+
+    // Test logging
+    logger->info("Logger initialized and ready to log.");
 }
 
 
