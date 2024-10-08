@@ -26,7 +26,8 @@ RUN cd /usr/src/gtest && \
 RUN git clone https://github.com/jupp0r/prometheus-cpp.git && \
     cd prometheus-cpp && \
     git submodule update --init && \
-    mkdir _build && cd _build && \
+    mkdir _build && \
+    cd _build && \
     cmake .. -DBUILD_SHARED_LIBS=ON && \
     make && make install
 
@@ -34,10 +35,10 @@ RUN git clone https://github.com/jupp0r/prometheus-cpp.git && \
 WORKDIR /app
 
 # Copy the contents of the project directory from the host to the container
-COPY . .
+COPY . /app
 
 # Create a build directory, configure the project with CMake, and compile
-RUN rm -rf build && mkdir build && cd build && cmake .. && make
+RUN mkdir build && cd build && cmake .. && make
 
 # Specify the default command to run the project executable
 CMD ["./build/rrt_3d"]
