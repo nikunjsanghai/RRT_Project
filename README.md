@@ -21,7 +21,7 @@ make
 ./rrt_3d
 ```
 ### Visualization
-visualization is done using SFML library for 2D, you can expand it to 3D if needed, since path planning is for mobile robot 2D path planning is enough. Here is an example output: 
+visualization for RRT Path Planning is done using SFML library for 2D, you can expand it to 3D if needed, since path planning is for mobile robot 2D path planning is enough. Here is an example output: 
 ![Screenshot from 2024-10-07 19-29-36](https://github.com/user-attachments/assets/9d7d8b5c-7713-42d1-8e59-5bd7c095022c)
 
 ### Containerization using Docker
