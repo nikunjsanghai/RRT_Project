@@ -50,7 +50,10 @@ If you want to scale your deployment, you can either do it in the .yaml file or 
 ```
 kubectl scale deployment rrt-project --replicas=10
 ```
-
+Commands to view the logs: 
+```
+kubectl logs <pod-name>  // to view the logs.
+```
 ### Expose the Service for Metrics Collection
 If your containers expose an API or a web interface, you’ll need to expose a Kubernetes service to allow external traffic to access your container instances.
 
