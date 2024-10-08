@@ -1,3 +1,14 @@
+### Project Dependencies 
+Use Original documentation of the dependencies to install the libraries
+```
+GoogleTest //unit tests
+SFML //visualization library
+C++ 17, G++ Compiler
+fmt //for logging
+spdlog //for logging
+prometheus // for custome metric generation
+```
+
 ### 2D Path Planning algorithm
 You can run it directly using the executable, if you want to build it again locally, follow these steps 
 ```
