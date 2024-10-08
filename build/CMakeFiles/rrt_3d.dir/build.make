@@ -95,7 +95,13 @@ rrt_3d: CMakeFiles/rrt_3d.dir/build.make
 rrt_3d: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
 rrt_3d: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
 rrt_3d: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1
+rrt_3d: /usr/local/lib/libprometheus-cpp-push.so.1.3.0
+rrt_3d: /usr/local/lib/libprometheus-cpp-pull.so.1.3.0
+rrt_3d: /usr/lib/x86_64-linux-gnu/libspdlog.so.1.9.2
 rrt_3d: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
+rrt_3d: /usr/lib/x86_64-linux-gnu/libcurl.so
+rrt_3d: /usr/local/lib/libprometheus-cpp-core.so.1.3.0
+rrt_3d: /usr/lib/x86_64-linux-gnu/libfmt.so.8.1.1
 rrt_3d: CMakeFiles/rrt_3d.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nikunj/RRT_Project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable rrt_3d"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rrt_3d.dir/link.txt --verbose=$(VERBOSE)

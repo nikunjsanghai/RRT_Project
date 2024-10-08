@@ -268,6 +268,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/c++/11/thread \
   /usr/include/c++/11/bits/std_thread.h \
   /usr/include/c++/11/bits/this_thread_sleep.h \
+  /usr/include/c++/11/sstream \
+  /usr/include/c++/11/bits/sstream.tcc \
   /usr/include/c++/11/condition_variable \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Window.hpp \
@@ -364,14 +366,103 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/include/SFML/Graphics/Glsl.inl \
   /usr/include/SFML/Graphics/Sprite.hpp \
   /usr/include/SFML/Graphics/Text.hpp \
-  /usr/include/SFML/Graphics/VertexBuffer.hpp
+  /usr/include/SFML/Graphics/VertexBuffer.hpp \
+  /usr/local/include/prometheus/exposer.h \
+  /usr/include/c++/11/cstddef \
+  /usr/local/include/prometheus/collectable.h \
+  /usr/local/include/prometheus/detail/core_export.h \
+  /usr/local/include/prometheus/detail/pull_export.h \
+  /usr/local/include/prometheus/registry.h \
+  /usr/local/include/prometheus/family.h \
+  /usr/local/include/prometheus/client_metric.h \
+  /usr/local/include/prometheus/detail/future_std.h \
+  /usr/local/include/prometheus/detail/utils.h \
+  /usr/local/include/prometheus/labels.h \
+  /usr/local/include/prometheus/metric_family.h \
+  /usr/local/include/prometheus/metric_type.h \
+  /usr/local/include/prometheus/gauge.h \
+  /usr/include/c++/11/atomic \
+  /usr/local/include/prometheus/detail/builder.h \
+  /usr/local/include/prometheus/counter.h \
+  /usr/include/spdlog/spdlog.h \
+  /usr/include/spdlog/common.h \
+  /usr/include/spdlog/tweakme.h \
+  /usr/include/spdlog/details/null_mutex.h \
+  /usr/include/spdlog/fmt/fmt.h \
+  /usr/include/fmt/core.h \
+  /usr/include/c++/11/cstring \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/include/fmt/format.h \
+  /usr/include/fmt/core.h \
+  /usr/include/spdlog/details/registry.h \
+  /usr/include/spdlog/logger.h \
+  /usr/include/spdlog/details/log_msg.h \
+  /usr/include/spdlog/details/backtracer.h \
+  /usr/include/spdlog/details/log_msg_buffer.h \
+  /usr/include/spdlog/details/circular_q.h \
+  /usr/include/c++/11/cassert \
+  /usr/include/assert.h \
+  /usr/include/spdlog/version.h \
+  /usr/include/spdlog/details/synchronous_factory.h \
+  /usr/include/spdlog/sinks/basic_file_sink.h \
+  /usr/include/spdlog/details/file_helper.h \
+  /usr/include/spdlog/sinks/base_sink.h \
+  /usr/include/spdlog/sinks/sink.h \
+  /usr/include/spdlog/formatter.h \
+  /usr/include/c++/11/iomanip \
+  /usr/include/c++/11/bits/quoted_string.h
 
+
+/usr/include/c++/11/bits/quoted_string.h:
+
+/usr/include/spdlog/sinks/sink.h:
+
+/usr/include/spdlog/sinks/base_sink.h:
+
+/usr/include/spdlog/details/file_helper.h:
+
+/usr/include/spdlog/details/synchronous_factory.h:
+
+/usr/include/c++/11/cassert:
+
+/usr/include/spdlog/details/circular_q.h:
+
+/usr/include/spdlog/details/log_msg_buffer.h:
+
+/usr/include/fmt/core.h:
+
+/usr/include/spdlog/fmt/fmt.h:
+
+/usr/include/spdlog/details/null_mutex.h:
+
+/usr/include/spdlog/spdlog.h:
+
+/usr/local/include/prometheus/detail/builder.h:
+
+/usr/include/c++/11/atomic:
+
+/usr/local/include/prometheus/gauge.h:
+
+/usr/local/include/prometheus/counter.h:
+
+/usr/local/include/prometheus/metric_type.h:
+
+/usr/local/include/prometheus/labels.h:
+
+/usr/local/include/prometheus/detail/utils.h:
+
+/usr/local/include/prometheus/detail/pull_export.h:
+
+/usr/local/include/prometheus/exposer.h:
 
 /usr/include/SFML/Graphics/Text.hpp:
 
 /usr/include/SFML/Graphics/Sprite.hpp:
 
 /usr/include/SFML/Graphics/Glsl.hpp:
+
+/usr/local/include/prometheus/client_metric.h:
 
 /usr/include/SFML/Graphics/Shader.hpp:
 
@@ -383,6 +474,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_map.h:
 
+/usr/include/spdlog/common.h:
+
 /usr/include/c++/11/bits/stl_tree.h:
 
 /usr/include/SFML/Graphics/Image.hpp:
@@ -390,6 +483,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/SFML/Graphics/Texture.hpp:
 
 /usr/include/SFML/Graphics/ConvexShape.hpp:
+
+/usr/include/strings.h:
 
 /usr/include/SFML/Graphics/View.hpp:
 
@@ -405,6 +500,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/SFML/Graphics/Export.hpp:
 
+/usr/local/include/prometheus/detail/core_export.h:
+
 /usr/include/SFML/Graphics/BlendMode.hpp:
 
 /usr/include/SFML/Window/WindowStyle.hpp:
@@ -412,6 +509,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/SFML/Window/WindowHandle.hpp:
 
 /usr/include/SFML/Window/Window.hpp:
+
+/usr/include/assert.h:
 
 /usr/include/SFML/Graphics/Font.hpp:
 
@@ -455,6 +554,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_algo.h:
 
+/usr/include/spdlog/logger.h:
+
 /usr/include/c++/11/algorithm:
 
 /usr/include/c++/11/map:
@@ -497,6 +598,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/SFML/Graphics.hpp:
 
+/usr/include/c++/11/sstream:
+
 /usr/include/c++/11/bits/parse_numbers.h:
 
 /usr/include/c++/11/ctime:
@@ -520,6 +623,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/backward/binders.h:
 
 /usr/include/c++/11/bits/deque.tcc:
+
+/usr/include/fmt/format.h:
 
 /usr/include/SFML/System/Vector2.inl:
 
@@ -567,6 +672,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/ext/concurrence.h:
 
+/usr/local/include/prometheus/detail/future_std.h:
+
 /usr/include/c++/11/bits/ios_base.h:
 
 /usr/include/x86_64-linux-gnu/bits/fp-logb.h:
@@ -579,6 +686,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/locale.h:
 
+/usr/local/include/prometheus/family.h:
+
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
 /usr/include/c++/11/bits/localefwd.h:
@@ -586,6 +695,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/tr1/hypergeometric.tcc:
 
 /usr/include/x86_64-linux-gnu/sys/select.h:
+
+/usr/include/c++/11/iomanip:
 
 /usr/include/c++/11/cctype:
 
@@ -613,6 +724,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_iterator.h:
 
+/usr/include/c++/11/bits/sstream.tcc:
+
 /usr/include/c++/11/new:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
@@ -637,6 +750,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
+/usr/local/include/prometheus/registry.h:
+
 /usr/include/c++/11/tr1/special_function_util.h:
 
 /usr/include/c++/11/functional:
@@ -658,6 +773,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/cmath:
 
 /usr/include/c++/11/bits/allocator.h:
+
+/usr/include/spdlog/sinks/basic_file_sink.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
@@ -688,6 +805,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/chrono:
 
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/include/spdlog/tweakme.h:
 
 /usr/include/c++/11/bits/algorithmfwd.h:
 
@@ -793,6 +912,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/pstl/glue_numeric_defs.h:
 
+/usr/local/include/prometheus/metric_family.h:
+
 /usr/include/c++/11/bits/exception_ptr.h:
 
 /usr/include/c++/11/ext/string_conversions.h:
@@ -812,6 +933,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/bits/move.h:
 
 /usr/include/c++/11/bits/hash_bytes.h:
+
+/usr/include/spdlog/details/registry.h:
 
 /usr/include/SFML/System/Clock.hpp:
 
@@ -925,6 +1048,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/system_error:
 
+/usr/include/c++/11/cstddef:
+
 /usr/include/SFML/Window/Sensor.hpp:
 
 /usr/include/c++/11/bits/stl_vector.h:
@@ -938,6 +1063,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/pstl/glue_algorithm_defs.h:
 
 /usr/include/c++/11/stdexcept:
+
+/usr/include/string.h:
 
 /usr/include/c++/11/bits/streambuf.tcc:
 
@@ -975,6 +1102,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/istream.tcc:
 
+/usr/local/include/prometheus/collectable.h:
+
 /usr/include/c++/11/vector:
 
 /usr/include/SFML/Graphics/Vertex.hpp:
@@ -985,6 +1114,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/backward/auto_ptr.h:
 
+/usr/include/spdlog/details/log_msg.h:
+
 /usr/include/c++/11/bits/stl_numeric.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
@@ -993,11 +1124,15 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/stl_bvector.h:
 
+/usr/include/spdlog/formatter.h:
+
 /usr/include/c++/11/bits/vector.tcc:
 
 /usr/include/c++/11/memory:
 
 /usr/include/c++/11/bits/stl_raw_storage_iter.h:
+
+/usr/include/spdlog/version.h:
 
 /usr/include/c++/11/bits/unique_lock.h:
 
@@ -1013,6 +1148,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 
 /usr/include/c++/11/bits/shared_ptr_atomic.h:
 
+/usr/include/spdlog/details/backtracer.h:
+
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
 /usr/include/c++/11/bits/stl_deque.h:
@@ -1020,6 +1157,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/c++/11/bits/std_abs.h:
 
 /usr/include/c++/11/bits/stl_heap.h:
+
+/usr/include/c++/11/cstring:
 
 /usr/include/SFML/Graphics/Transform.hpp:
 

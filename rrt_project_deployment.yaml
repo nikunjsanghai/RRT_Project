@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rrt-project
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+spec:
+  replicas: 10  # Number of container instances (replicas)
+  selector:
+    matchLabels:
+      app: rrt-project
+  template:
+    metadata:
+      labels:
+        app: rrt-project
+      annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "8080"
+    spec:
+      containers:
+      - name: rrt-project-container
+        image: rrt_project:latest  # The Docker image you built
+        imagePullPolicy: IfNotPresent # Pull the image from the local registry
+        ports:
+        - containerPort: 8080  # Replace this if your application exposes a different port

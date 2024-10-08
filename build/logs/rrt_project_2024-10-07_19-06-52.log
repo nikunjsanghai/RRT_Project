@@ -1,0 +1,6 @@
+[2024-10-07 19:06:52.207] [file_logger] [debug] Logging Level is set at debug
+[2024-10-07 19:06:52.207] [file_logger] [info] Logging Level is set at info
+[2024-10-07 19:06:52.207] [file_logger] [warning] Logging Level is set at warn
+[2024-10-07 19:06:52.207] [file_logger] [error] Logging Level is set at error
+[2024-10-07 19:06:52.207] [file_logger] [critical] Logging Level is set at critical
+[2024-10-07 19:06:53.353] [file_logger] [info] RRT completed in 1146 milliseconds.

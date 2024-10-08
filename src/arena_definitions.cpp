@@ -143,6 +143,8 @@ void RRTPlanner<T>::run(int thread_id) {
                     std::unique_lock<std::mutex> lock(treeMutex);
                     targetReached = true;
                     cv.notify_all();
+                    std::cout << "Thread " << thread_id << ": Notified all threads" << std::endl;
+                    lock.unlock();
                 }
             }
         }
@@ -170,6 +172,7 @@ void RRTPlanner<T>::start(int num_threads) {
 
     std::unique_lock<std::mutex> lock(treeMutex);
     cv.wait(lock, [this] { return targetReached; });
+    lock.unlock();
 
     // Join all threads once the target is reached
     for (auto& thread : threads) {
@@ -177,4 +180,50 @@ void RRTPlanner<T>::start(int num_threads) {
     }
 }
 
+template <typename T>
+std::vector<Point<T>> RRTPlanner<T>::getShortestPath() {
+    std::queue<Node<T>*> nodeQueue;
+    std::unordered_map<Node<T>*, Node<T>*> parentMap; // To track the parent of each node
+    std::vector<Point<T>> path;
+    
+    // Start BFS from the root node
+    nodeQueue.push(root.get());
+    parentMap[root.get()] = nullptr;
+
+    Node<T>* targetNode = nullptr;
+
+    // Perform BFS to find the target node
+    while (!nodeQueue.empty()) {
+        Node<T>* currentNode = nodeQueue.front();
+        nodeQueue.pop();
+
+        // Check if we've reached the target node
+        if (calculateDistance(currentNode->getPoint(), setup.target) < setup.dim * 1.5) {
+            targetNode = currentNode;
+            break;
+        }
+
+        // Add children to the queue
+        for (const auto& child : currentNode->getChildren()) {
+            nodeQueue.push(child.get());
+            parentMap[child.get()] = currentNode; // Map the child to its parent
+        }
+    }
+
+    // If targetNode is found, trace the path from the target node back to the root
+    if (targetNode) {
+        Node<T>* currentNode = targetNode;
+        while (currentNode != nullptr) {
+            path.push_back(currentNode->getPoint());
+            currentNode = parentMap[currentNode]; // Move to the parent node
+        }
+
+        // Reverse the path to start from the root
+        std::reverse(path.begin(), path.end());
+    } else {
+        std::cerr << "Target not reachable from the root node!" << std::endl;
+    }
+
+    return path;
+}
 

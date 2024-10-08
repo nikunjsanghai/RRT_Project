@@ -8,8 +8,18 @@
 #include <unordered_set>
 #include <mutex>
 #include <thread>
+#include <chrono>
+#include <ctime>
+#include <sstream>
 #include <condition_variable>
 #include <SFML/Graphics.hpp>
+#include <prometheus/exposer.h>
+#include <prometheus/registry.h>
+#include <prometheus/gauge.h>
+#include <prometheus/counter.h>
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/basic_file_sink.h> // To log to a file
+#include <iomanip>
 
 // Templated Point structure for 2D and 3D space
 template <typename T>
@@ -160,6 +170,7 @@ public: // Add this to declare public members
         : gen(std::random_device{}()), distX(0, setup.length), distY(0, setup.width), count(1), setup(setup), root(std::make_unique<Node<T>>(setup.start)) {
         setup.markCell(setup.start, 1);
     }
+    std::unique_ptr<Node<T>> getRoot() { return std::move(root); }
 
     // Nearest neighbor search
     Node<T>* findNearest(const Point<T>& randomPoint, Node<T>* currentNode, double& minDistance);
@@ -175,7 +186,7 @@ public: // Add this to declare public members
 
     // Main RRT loop for the thread
     void run(int thread_id);
-
+    std::vector<Point<T>> getShortestPath();
     // Start the RRT planner with multiple threads
     void start(int num_threads);
 
@@ -185,3 +196,183 @@ private:  // If you have private members or helper functions, declare them here
     }
 };
 
+
+// Function to visualize the RRT tree, obstacles, and the start and target points
+
+// Function to visualize the RRT tree, obstacles, and the start and target points
+template <typename T>
+void visualize(const Setup<T>& setup, const Node<T>* root, const std::vector<Point<T>>& path) {
+    // Create a window for visualization
+    sf::RenderWindow window(sf::VideoMode(setup.length, setup.width), "RRT Tree and Path Visualization");
+
+    // Define colors
+    sf::Color obstacleColor = sf::Color(101, 67, 33);   // Dark Brown for obstacles
+    sf::Color nodeColor = sf::Color(0, 128, 128);       // Dark Teal for nodes
+    sf::Color lineColor = sf::Color(0, 102, 102);       // Slightly lighter Teal for lines between nodes
+    sf::Color startEndColor = sf::Color(50, 50, 50);    // Dark Gray for start and end points
+    sf::Color pathColor = sf::Color::Black;             // Black for the path
+
+    // Set path thickness
+    float pathThickness = 6.0f;  // Increase this to make the path more prominent
+
+    // Run the visualization loop
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear(sf::Color::White);  // Clear with white background
+
+        // Draw obstacles (as brown rectangles)
+        for (int i = 0; i < setup.arena.size(); ++i) {
+            for (int j = 0; j < setup.arena[0].size(); ++j) {
+                if (setup.arena[i][j] == -1) {
+                    sf::RectangleShape obstacle(sf::Vector2f(setup.dim, setup.dim));
+                    obstacle.setPosition(j * setup.dim, i * setup.dim);
+                    obstacle.setFillColor(obstacleColor);
+                    window.draw(obstacle);
+                }
+            }
+        }
+
+        // Function to recursively draw the nodes and lines
+        std::function<void(const Node<T>*)> drawTree = [&](const Node<T>* node) {
+            if (!node) return;
+
+            // Draw a small black dot for the node
+            sf::CircleShape nodeDot(setup.dim / 4);
+            nodeDot.setPosition(node->getPoint().getX(), node->getPoint().getY());
+            nodeDot.setFillColor(nodeColor);
+            window.draw(nodeDot);
+
+            // Draw a line from the parent to the current node (if not root)
+            if (node->getParent()) {
+                sf::Vertex line[] = {
+                    sf::Vertex(sf::Vector2f(node->getParent()->getPoint().getX(), node->getParent()->getPoint().getY()), lineColor),
+                    sf::Vertex(sf::Vector2f(node->getPoint().getX(), node->getPoint().getY()), lineColor)
+                };
+                window.draw(line, 2, sf::Lines);
+            }
+
+            // Recursively draw all the children of the current node
+            for (const auto& child : node->getChildren()) {
+                drawTree(child.get());
+            }
+        };
+
+        // Start drawing the tree from the root node
+        drawTree(root);
+
+        // Draw the start point as a red dot
+        sf::CircleShape startDot(setup.dim / 2);
+        startDot.setPosition(setup.start.getX(), setup.start.getY());
+        startDot.setFillColor(startEndColor);
+        window.draw(startDot);
+
+        // Draw the target point as a red dot
+        sf::CircleShape targetDot(setup.dim / 2);
+        targetDot.setPosition(setup.target.getX(), setup.target.getY());
+        targetDot.setFillColor(startEndColor);
+        window.draw(targetDot);
+
+        // Draw the shortest path as a thick black line
+        if (!path.empty()) {
+            for (size_t i = 1; i < path.size(); ++i) {
+                // Calculate the direction and length of the segment
+                sf::Vector2f start(path[i - 1].getX(), path[i - 1].getY());
+                sf::Vector2f end(path[i].getX(), path[i].getY());
+                sf::Vector2f direction = end - start;
+
+                // Calculate the angle of rotation
+                float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+                float angle = std::atan2(direction.y, direction.x) * 180 / 3.14159f;
+
+                // Create a rectangle to represent the thick line
+                sf::RectangleShape pathSegment(sf::Vector2f(length, pathThickness));
+                pathSegment.setPosition(start);
+                pathSegment.setRotation(angle);
+                pathSegment.setFillColor(pathColor);
+
+                window.draw(pathSegment);
+            }
+        }
+
+        window.display();  // Display everything on the screen
+    }
+}
+
+std::string generateLogFileName() {
+    // Get the current time
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+
+    // Format the time as a string (e.g., "rrt_project_2024-10-06_12-30-45.log")
+    std::ostringstream oss;
+    oss << "logs/rrt_project_" << std::put_time(std::localtime(&now_time), "%Y-%m-%d_%H-%M-%S") << ".log";
+    return oss.str();
+}
+void setupLogger() {
+    // Generate a dynamic log file name
+    std::string logFileName = generateLogFileName();
+    auto logger = spdlog::basic_logger_mt("file_logger", logFileName);
+
+    // Set the logger level
+    spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+    logger->trace("Logging Level is set at trace");
+    logger->debug("Logging Level is set at debug");
+    logger->info("Logging Level is set at info");
+    logger->warn("Logging Level is set at warn");
+    logger->error("Logging Level is set at error");
+    logger->critical("Logging Level is set at critical");
+}
+
+
+// Templated function to add obstacles in a warehouse environment
+template <typename T>
+void addWarehouseObstacles(Setup<T>& setup, int width, int height) {
+    int shelfWidth = width / 5;        // Divide the width into 5 equal parts
+    int shelfHeight = height / 10;     // Divide the height into 10 equal parts
+    int spaceBetweenShelves = height / 10; // Space between each shelf
+
+    // List of obstacles, each obstacle defined by 4 corner points
+    std::vector<std::vector<Point<T>>> obstacles;
+
+    // Add obstacles in the first column
+    for (int i = 0; i < 4; i++) {
+        int x1 = shelfWidth; // x-coordinate for the shelf in the first column
+        int y1 = (i * (shelfHeight + spaceBetweenShelves)) + spaceBetweenShelves;  // Top left Y
+        int y2 = y1 + shelfHeight;  // Bottom Y
+
+        // Add top-left, top-right, bottom-right, and bottom-left points
+        std::vector<Point<T>> shelf = {
+            Point<T>(x1, y1),                  // Top-left
+            Point<T>(x1 + shelfWidth, y1),     // Top-right
+            Point<T>(x1 + shelfWidth, y2),     // Bottom-right
+            Point<T>(x1, y2)                   // Bottom-left
+        };
+        obstacles.push_back(shelf);  // Add to obstacles list
+    }
+
+    // Add obstacles in the second column
+    for (int i = 0; i < 4; i++) {
+        int x1 = width - 2 * shelfWidth; // x-coordinate for the shelf in the second column
+        int y1 = (i * (shelfHeight + spaceBetweenShelves)) + spaceBetweenShelves;  // Top left Y
+        int y2 = y1 + shelfHeight;  // Bottom Y
+
+        // Add top-left, top-right, bottom-right, and bottom-left points
+        std::vector<Point<T>> shelf = {
+            Point<T>(x1, y1),                  // Top-left
+            Point<T>(x1 + shelfWidth, y1),     // Top-right
+            Point<T>(x1 + shelfWidth, y2),     // Bottom-right
+            Point<T>(x1, y2)                   // Bottom-left
+        };
+        obstacles.push_back(shelf);  // Add to obstacles list
+    }
+
+    // Add each obstacle to the setup
+    for (const auto& obstacle : obstacles) {
+        setup.addObstacle(obstacle);
+    }
+}

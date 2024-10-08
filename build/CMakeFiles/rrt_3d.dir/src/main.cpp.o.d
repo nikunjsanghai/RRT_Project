@@ -212,7 +212,8 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h /usr/include/c++/11/thread \
  /usr/include/c++/11/bits/std_thread.h \
- /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/include/c++/11/bits/this_thread_sleep.h /usr/include/c++/11/sstream \
+ /usr/include/c++/11/bits/sstream.tcc \
  /usr/include/c++/11/condition_variable /usr/include/SFML/Graphics.hpp \
  /usr/include/SFML/Window.hpp /usr/include/SFML/System.hpp \
  /usr/include/SFML/Config.hpp /usr/include/SFML/System/Clock.hpp \
@@ -287,4 +288,35 @@ CMakeFiles/rrt_3d.dir/src/main.cpp.o: \
  /usr/include/SFML/Graphics/Glsl.hpp /usr/include/SFML/Graphics/Glsl.inl \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
- /usr/include/SFML/Graphics/VertexBuffer.hpp
+ /usr/include/SFML/Graphics/VertexBuffer.hpp \
+ /usr/local/include/prometheus/exposer.h /usr/include/c++/11/cstddef \
+ /usr/local/include/prometheus/collectable.h \
+ /usr/local/include/prometheus/detail/core_export.h \
+ /usr/local/include/prometheus/detail/pull_export.h \
+ /usr/local/include/prometheus/registry.h \
+ /usr/local/include/prometheus/family.h \
+ /usr/local/include/prometheus/client_metric.h \
+ /usr/local/include/prometheus/detail/future_std.h \
+ /usr/local/include/prometheus/detail/utils.h \
+ /usr/local/include/prometheus/labels.h \
+ /usr/local/include/prometheus/metric_family.h \
+ /usr/local/include/prometheus/metric_type.h \
+ /usr/local/include/prometheus/gauge.h /usr/include/c++/11/atomic \
+ /usr/local/include/prometheus/detail/builder.h \
+ /usr/local/include/prometheus/counter.h /usr/include/spdlog/spdlog.h \
+ /usr/include/spdlog/common.h /usr/include/spdlog/tweakme.h \
+ /usr/include/spdlog/details/null_mutex.h /usr/include/spdlog/fmt/fmt.h \
+ /usr/include/fmt/core.h /usr/include/c++/11/cstring \
+ /usr/include/string.h /usr/include/strings.h /usr/include/fmt/format.h \
+ /usr/include/fmt/core.h /usr/include/spdlog/details/registry.h \
+ /usr/include/spdlog/logger.h /usr/include/spdlog/details/log_msg.h \
+ /usr/include/spdlog/details/backtracer.h \
+ /usr/include/spdlog/details/log_msg_buffer.h \
+ /usr/include/spdlog/details/circular_q.h /usr/include/c++/11/cassert \
+ /usr/include/assert.h /usr/include/spdlog/version.h \
+ /usr/include/spdlog/details/synchronous_factory.h \
+ /usr/include/spdlog/sinks/basic_file_sink.h \
+ /usr/include/spdlog/details/file_helper.h \
+ /usr/include/spdlog/sinks/base_sink.h /usr/include/spdlog/sinks/sink.h \
+ /usr/include/spdlog/formatter.h /usr/include/c++/11/iomanip \
+ /usr/include/c++/11/bits/quoted_string.h
