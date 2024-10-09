@@ -30,30 +30,35 @@ To build the docker image of the project,use the command
 ```
 docker build -t rrt_project .
 ```
+![Screenshot from 2024-10-08 13-59-15](https://github.com/user-attachments/assets/cee03a7a-6cbc-4bb3-a51a-03ca972d5910)
+
 You can run the image directly, but it would be a single run
 ```
 docker run -it rrt_project
 ```
 ### Scaling Of Tests Using Kubernetes
-Kubernetes (minikube) is being used for local container management and then custom metrics are being attained by using Prometheus, you would need to create a .yaml file for specifying deployment details of your pods in the cluster. 
-Please look at the rrt_project_deployment.yaml file for viewing your deployment selections, to apply the deployment, use the command: 
+Kubernetes (minikube) is being used for local container management and then logs are being attained by using shell script, you would need to create a .yaml file for specifying kubernetes jobs details of your pods in the cluster. 
+Please look at the rrt_project_jobs.yaml file for viewing job parallelism and other detials,commands for running minikube are: 
+```
+minikube start
+```
+![Screenshot from 2024-10-08 14-19-49](https://github.com/user-attachments/assets/4301bcf4-d0ae-4e18-bfc8-5de72091779c)
+Set environment as the local minikube environment: 
+```
+eval $(minikube -p minikube docker-env)
+```
+To deploy the pods as kubernetes jobs:
 ```
 kubectl apply -f rrt_project_deployment.yaml
 ```
-Check the status of the pods using the command:
+Check the status of the pods using the command, use fetch_all_logs.sh shell script to download all logs to analyze runtimes.
 ```
-kubectl get pods
+kubectl get jobs
 ```
-
-If you want to scale your deployment, you can either do it in the .yaml file or using the command
+Retrieve logs:
 ```
-kubectl scale deployment rrt-project --replicas=10
+chmod +x fetch_all_logs.sh
+./fetch_all_logs.sh
 ```
-Commands to view the logs: 
-```
-kubectl logs <pod-name>  // to view the logs.
-```
-### Expose The Service For Metrics Collection
-If your containers expose an API or a web interface, you’ll need to expose a Kubernetes service to allow external traffic to access your container instances.
 
 
