@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rrt-project-job
+spec:
+  completions: 10  # Number of tasks to complete
+  parallelism: 10  # Number of tasks to run in parallel
+  template:
+    metadata:
+      labels:
+        app: rrt-project
+    spec:
+      containers:
+      - name: rrt-project-container
+        image: rrt_project:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: log-volume
+          mountPath: /app/logs
+      - name: log-collector
+        image: busybox
+        command: ['sh', '-c', 'while true; do sleep 3600; done']
+        volumeMounts:
+        - name: log-volume
+          mountPath: /app/logs
+      restartPolicy: Never
+      volumes:
+      - name: log-volume
+        emptyDir: {}
