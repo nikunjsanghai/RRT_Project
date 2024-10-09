@@ -60,5 +60,5 @@ Retrieve logs:
 chmod +x fetch_all_logs.sh
 ./fetch_all_logs.sh
 ```
-*** 10 logs are uploaded in the repo for reference ***
+**10 logs are uploaded in the repo for reference**
 
