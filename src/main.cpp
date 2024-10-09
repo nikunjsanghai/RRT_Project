@@ -13,13 +13,13 @@ int main() {
     addWarehouseObstacles(setup, width, height); // Assume this function is defined elsewhere
 
     // Prometheus metric setup
-    prometheus::Exposer exposer{"127.0.0.1:8080"};
-    auto registry = std::make_shared<prometheus::Registry>();
-    auto& gauge_family = prometheus::BuildGauge()
-                            .Name("rrt_execution_time")
-                            .Help("RRT execution time in milliseconds")
-                            .Register(*registry);
-    auto& gauge = gauge_family.Add({{"metric", "execution_time"}});
+    //prometheus::Exposer exposer{"127.0.0.1:8080"};
+    //auto registry = std::make_shared<prometheus::Registry>();
+    //auto& gauge_family = prometheus::BuildGauge()
+     //                       .Name("rrt_execution_time")
+     //                       .Help("RRT execution time in milliseconds")
+     //                       .Register(*registry);
+    //auto& gauge = gauge_family.Add({{"metric", "execution_time"}});
 
     // Start the RRT Planner
     RRTPlanner<int> rrt(setup);
@@ -32,10 +32,10 @@ int main() {
     logger->info("RRT completed in {} milliseconds.", duration);
 
     // Record the duration in Prometheus
-    gauge.Set(static_cast<double>(duration));
+    //gauge.Set(static_cast<double>(duration));
 
     // Visualize the RRT and obstacles
-    visualize(setup, rrt.getRoot().get(), path);
+    //visualize(setup, rrt.getRoot().get(), path);
 
     return 0;
 }

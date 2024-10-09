@@ -13,10 +13,10 @@
 #include <sstream>
 #include <condition_variable>
 #include <SFML/Graphics.hpp>
-#include <prometheus/exposer.h>
-#include <prometheus/registry.h>
-#include <prometheus/gauge.h>
-#include <prometheus/counter.h>
+//#include <prometheus/exposer.h>
+//#include <prometheus/registry.h>
+//#include <prometheus/gauge.h>
+//#include <prometheus/counter.h>
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/basic_file_sink.h> // To log to a file
 #include <iomanip>
