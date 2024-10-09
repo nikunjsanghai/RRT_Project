@@ -49,7 +49,7 @@ eval $(minikube -p minikube docker-env)
 ```
 To deploy the pods as kubernetes jobs:
 ```
-kubectl apply -f rrt_project_deployment.yaml
+kubectl apply -f rrt_project_jobs.yaml
 ```
 Check the status of the pods using the command, use fetch_all_logs.sh shell script to download all logs to analyze runtimes.
 ```
