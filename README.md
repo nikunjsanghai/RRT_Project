@@ -6,7 +6,6 @@ SFML                                     //visualization library
 C++ 17, G++ Compiler
 fmt                                       //for logging
 spdlog                                    //for logging
-prometheus                                // for custom metric generation
 minikube                                  //scaling and container management
 ```
 
